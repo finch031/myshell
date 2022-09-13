@@ -1,0 +1,10 @@
+一. ssh
+1. yum install rsync -y
+2. useradd -m hadoop -s /bin/bash
+3. passwd hadoop -> hadoop@2021
+4. adduser hadoop sudo
+5. cd ~/.ssh/
+   ssh-keygen -t rsa
+   cat ./id_rsa.pub >> ./authorized_keys
+
+
