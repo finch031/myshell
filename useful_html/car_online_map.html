@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>轨迹回放</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .input-card .btn{
+            margin-right: 1.2rem;
+            width: 9rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="input-card">
+    <h4>轨迹回放控制</h4>
+    <div class="input-item">
+        <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+        <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+    </div>
+    <div class="input-item">
+        <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+        <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+    </div>
+</div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值"></script>
+<script>
+    var marker, lineArr = [[118.577593,24.815073],[118.577732,24.81534],[118.578077,24.816216],[118.578239,24.817108],[118.578183,24.817808],[118.57801,24.818643],[118.577901,24.819206],[118.577792,2
+4.819427],[118.577979,24.818823],[118.578234,24.817804],[118.578317,24.817008],[118.578161,24.816302],[118.577891,24.815567],[118.578173,24.815087],[118.579146,24.814694],[118.579917,24.814349],[118.
+580248,24.814011],[118.579838,24.813371],[118.579212,24.812505],[118.578932,24.811627],[118.578919,24.81063],[118.5786,24.80973],[118.577988,24.808971],[118.577204,24.808083],[118.576486,24.807292],[
+118.575708,24.806487],[118.574991,24.805729],[118.57402,24.804881],[118.57341,24.804128],[118.572728,24.803404],[118.572015,24.802612]];
+    // var marker, lineArr = [[118.577593,24.815073],[118.577732,24.81534],[118.578077,24.816216]];
+
+
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 17
+    });
+
+    marker = new AMap.Marker({
+        map: map,
+        position: [118.577593,24.815073],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle:-90,
+    });
+
+    // 绘制轨迹
+    var polyline = new AMap.Polyline({
+        map: map,
+        path: lineArr,
+        showDir:true,
+        strokeColor: "#28F",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+    var passedPolyline = new AMap.Polyline({
+        map: map,
+        // path: lineArr,
+        strokeColor: "#AF5",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+
+    marker.on('moving', function (e) {
+        passedPolyline.setPath(e.passedPath);
+    });
+
+    map.setFitView();
+
+    function startAnimation () {
+        marker.moveAlong(lineArr, 200);
+    }
+
+    function pauseAnimation () {
+        marker.pauseMove();
+    }
+
+    function resumeAnimation () {
+        marker.resumeMove();
+    }
+
+    function stopAnimation () {
+        marker.stopMove();
+    }
+</script>
+</body>
+</html>
